@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "8dd85aee02e39dd280c75eef88ffdb86eed4b07b",
+          "version": "5.6.2"
+        }
+      },
+      {
+        "package": "BottomSheet",
+        "repositoryURL": "https://github.com/joomcode/BottomSheet.git",
+        "state": {
+          "branch": null,
+          "revision": "2397f22fa1828169dbb233a9ad9d83ed72b6a236",
+          "version": "2.0.1"
+        }
+      },
+      {
+        "package": "SDWebImage",
+        "repositoryURL": "https://github.com/SDWebImage/SDWebImage",
+        "state": {
+          "branch": null,
+          "revision": "9248fe561a2a153916fb9597e3af4434784c6d32",
+          "version": "5.13.4"
+        }
+      },
+      {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/SnapKit/SnapKit.git",
+        "state": {
+          "branch": null,
+          "revision": "f222cbdf325885926566172f6f5f06af95473158",
+          "version": "5.6.0"
+        }
+      },
+      {
+        "package": "YouTubeiOSPlayerHelper",
+        "repositoryURL": "https://github.com/youtube/youtube-ios-player-helper.git",
+        "state": {
+          "branch": null,
+          "revision": "f57129cd4380ec0a74dd3a59da3270a1d653d59b",
+          "version": "1.0.4"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

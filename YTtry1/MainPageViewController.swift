@@ -14,11 +14,6 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
     var statistics : [VideoStatistics] = []
     
     
-    
-    
-   
-    
-    
 
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -44,10 +39,12 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
         super.viewDidLoad()
         dataSource = self
         delegate = self
+        //networkService.fetchChannnelInfo()
         //MARK: - Don't forget to uncomment it !
-        //networkService.fetchVideosFromPlaylists()
-        //networkService.delegate = self
-        //networkService.delegate2 = self
+        networkService.fetchVideosFromPlaylists()
+        networkService.delegate = self
+        networkService.delegate2 = self
+        networkService.getUploadPlaylist()
         
         
 
@@ -83,14 +80,18 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
         }
             self.setViewControllers([self.pages[0]], direction: .forward, animated: false, completion: nil)
     }
+        
     }
     
     func mapStatisticts() {
-            print("printing mapStat model = \(self.statistics)")
+            //print("printing mapStat model = \(self.statistics)")
             for i in 0..<self.videos.count {
-                print(i)
                 self.pages[i].detailLabel.text = self.statistics[i].viewCount
             }
+    }
+    
+    func mapBanner() {
+        
     }
 }
 
@@ -128,6 +129,7 @@ extension MainPageViewController: UIPageViewControllerDataSource {
 extension MainPageViewController: UIPageViewControllerDelegate {
 
     // if you do NOT want the built-in PageControl (the "dots"), comment-out these funcs
+    
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return pages.count

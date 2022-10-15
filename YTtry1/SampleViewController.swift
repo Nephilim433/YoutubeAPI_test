@@ -34,9 +34,13 @@ class SampleViewController: UIViewController {
         return label
     }()
     
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        view.addTapGesture {
+            print("this prints from sampleviewcontroller" + self.nameLabel.text!)
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -49,6 +53,8 @@ class SampleViewController: UIViewController {
             
             make.bottom.equalTo(view)
         }
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 10
         image.addSubview(detailLabel)
         detailLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(image).offset(14)

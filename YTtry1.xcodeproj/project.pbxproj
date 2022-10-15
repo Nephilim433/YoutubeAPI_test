@@ -24,6 +24,12 @@
 		C664CC8928F6F4C90076AB14 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664CC8828F6F4C90076AB14 /* Video.swift */; };
 		C664CC8B28F6F51E0076AB14 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664CC8A28F6F51E0076AB14 /* NetworkService.swift */; };
 		C664CC8E28F7044A0076AB14 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C664CC8D28F7044A0076AB14 /* Alamofire */; };
+		C69EEE4C28F8B8B500E1DEF4 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = C69EEE4B28F8B8B500E1DEF4 /* SwiftyJSON */; };
+		C69EEE4E28F95D7B00E1DEF4 /* MidCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69EEE4D28F95D7B00E1DEF4 /* MidCollectionView.swift */; };
+		C69EEE5028F95D9E00E1DEF4 /* MidCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69EEE4F28F95D9E00E1DEF4 /* MidCollectionViewCell.swift */; };
+		C69EEE5328F9A6C800E1DEF4 /* BottomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69EEE5228F9A6C700E1DEF4 /* BottomCollectionViewCell.swift */; };
+		C69EEE5528F9A6F400E1DEF4 /* BottomCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69EEE5428F9A6F400E1DEF4 /* BottomCollectionView.swift */; };
+		C69EEE5828F9CF1400E1DEF4 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69EEE5728F9CF1300E1DEF4 /* DetailView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +47,11 @@
 		C664CC8628F6F3430076AB14 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C664CC8828F6F4C90076AB14 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		C664CC8A28F6F51E0076AB14 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		C69EEE4D28F95D7B00E1DEF4 /* MidCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCollectionView.swift; sourceTree = "<group>"; };
+		C69EEE4F28F95D9E00E1DEF4 /* MidCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidCollectionViewCell.swift; sourceTree = "<group>"; };
+		C69EEE5228F9A6C700E1DEF4 /* BottomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomCollectionViewCell.swift; sourceTree = "<group>"; };
+		C69EEE5428F9A6F400E1DEF4 /* BottomCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomCollectionView.swift; sourceTree = "<group>"; };
+		C69EEE5728F9CF1300E1DEF4 /* DetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69EEE4C28F8B8B500E1DEF4 /* SwiftyJSON in Frameworks */,
 				C664CC7D28F58D1D0076AB14 /* SnapKit in Frameworks */,
 				C664CC8E28F7044A0076AB14 /* Alamofire in Frameworks */,
 				C664CC7528F018B80076AB14 /* YouTubeiOSPlayerHelper in Frameworks */,
@@ -84,8 +96,10 @@
 				C664CC8628F6F3430076AB14 /* Constants.swift */,
 				C664CC8828F6F4C90076AB14 /* Video.swift */,
 				C664CC8A28F6F51E0076AB14 /* NetworkService.swift */,
-				C664CC8028F5ACDA0076AB14 /* DetailView.swift */,
+				C69EEE5928F9CF4400E1DEF4 /* DetailView */,
 				C664CC8228F5B9880076AB14 /* MainPageViewController.swift */,
+				C69EEE5628F9A6FE00E1DEF4 /* Bottom Swipe */,
+				C69EEE5128F95DA400E1DEF4 /* Mid Swipe */,
 				C664CC8428F5C48D0076AB14 /* SampleViewController.swift */,
 				C664CC7E28F5A0B50076AB14 /* Main.storyboard */,
 				C664CC6828F018600076AB14 /* Assets.xcassets */,
@@ -93,6 +107,33 @@
 				C664CC6D28F018600076AB14 /* Info.plist */,
 			);
 			path = YTtry1;
+			sourceTree = "<group>";
+		};
+		C69EEE5128F95DA400E1DEF4 /* Mid Swipe */ = {
+			isa = PBXGroup;
+			children = (
+				C69EEE4D28F95D7B00E1DEF4 /* MidCollectionView.swift */,
+				C69EEE4F28F95D9E00E1DEF4 /* MidCollectionViewCell.swift */,
+			);
+			path = "Mid Swipe";
+			sourceTree = "<group>";
+		};
+		C69EEE5628F9A6FE00E1DEF4 /* Bottom Swipe */ = {
+			isa = PBXGroup;
+			children = (
+				C69EEE5228F9A6C700E1DEF4 /* BottomCollectionViewCell.swift */,
+				C69EEE5428F9A6F400E1DEF4 /* BottomCollectionView.swift */,
+			);
+			path = "Bottom Swipe";
+			sourceTree = "<group>";
+		};
+		C69EEE5928F9CF4400E1DEF4 /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				C664CC8028F5ACDA0076AB14 /* DetailView.swift */,
+				C69EEE5728F9CF1300E1DEF4 /* DetailView.xib */,
+			);
+			path = DetailView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,6 +158,7 @@
 				C664CC7C28F58D1D0076AB14 /* SnapKit */,
 				C664CC8D28F7044A0076AB14 /* Alamofire */,
 				C65A575128F804230051DA03 /* SDWebImage */,
+				C69EEE4B28F8B8B500E1DEF4 /* SwiftyJSON */,
 			);
 			productName = YTtry1;
 			productReference = C664CC5C28F0185C0076AB14 /* YTtry1.app */;
@@ -152,6 +194,7 @@
 				C664CC7B28F58D1D0076AB14 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				C664CC8C28F7044A0076AB14 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				C65A575028F804230051DA03 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				C69EEE4A28F8B8B500E1DEF4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = C664CC5D28F0185C0076AB14 /* Products */;
 			projectDirPath = "";
@@ -167,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69EEE5828F9CF1400E1DEF4 /* DetailView.xib in Resources */,
 				C664CC7F28F5A0B50076AB14 /* Main.storyboard in Resources */,
 				C664CC6C28F018600076AB14 /* LaunchScreen.storyboard in Resources */,
 				C664CC6928F018600076AB14 /* Assets.xcassets in Resources */,
@@ -180,13 +224,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69EEE5028F95D9E00E1DEF4 /* MidCollectionViewCell.swift in Sources */,
 				C664CC8328F5B9890076AB14 /* MainPageViewController.swift in Sources */,
 				C664CC6428F0185C0076AB14 /* ViewController.swift in Sources */,
 				C664CC8528F5C48D0076AB14 /* SampleViewController.swift in Sources */,
+				C69EEE4E28F95D7B00E1DEF4 /* MidCollectionView.swift in Sources */,
 				C664CC6028F0185C0076AB14 /* AppDelegate.swift in Sources */,
 				C664CC8728F6F3440076AB14 /* Constants.swift in Sources */,
 				C664CC8928F6F4C90076AB14 /* Video.swift in Sources */,
 				C664CC8B28F6F51E0076AB14 /* NetworkService.swift in Sources */,
+				C69EEE5528F9A6F400E1DEF4 /* BottomCollectionView.swift in Sources */,
+				C69EEE5328F9A6C800E1DEF4 /* BottomCollectionViewCell.swift in Sources */,
 				C664CC8128F5ACDA0076AB14 /* DetailView.swift in Sources */,
 				C664CC6228F0185C0076AB14 /* SceneDelegate.swift in Sources */,
 			);
@@ -442,6 +490,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		C69EEE4A28F8B8B500E1DEF4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -469,6 +525,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C664CC8C28F7044A0076AB14 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		C69EEE4B28F8B8B500E1DEF4 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C69EEE4A28F8B8B500E1DEF4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

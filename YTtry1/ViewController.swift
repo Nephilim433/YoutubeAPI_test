@@ -17,6 +17,22 @@ class ViewController: UIViewController {
     
     var networkService = NetworkService()
     
+    
+    var scrollView : UIScrollView = {
+       let sc = UIScrollView()
+        sc.alwaysBounceVertical = true
+        sc.showsVerticalScrollIndicator = false
+        //how to make the ScrollView do not jump up ?
+        sc.backgroundColor = .blue
+        return sc
+    }()
+    var scrollContentView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .orange
+        return v
+        
+    }()
     var mainContentView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -33,11 +49,22 @@ class ViewController: UIViewController {
         return label
     }()
     
+    var playlistLabel2: UILabel = {
+        var label = UILabel()
+        label.text = "Playlist Name"
+        label.font = UIFont.boldSystemFont(ofSize: 23)
+        label.textColor = .white
+        return label
+    }()
+    
     var thePageVC: MainPageViewController!
-    
-    
-    
+    var midCollectionView = MidCollectionView()
+    var bottomCollectionView = BottomCollectionView()
     var detailView = DetailView()
+    
+    
+    
+    
     
     private var isBottomSheetIsShown = false
     
@@ -51,66 +78,125 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
 
         title = "Youtube API"
+        
+        setupScrollView()
         view.backgroundColor = UIColor(hexString: "#1D1B26")
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         
         super.viewDidLoad()
-        setupMainPageController()
         
-        
-        view.addSubview(detailView)
-        
-        
+        let trackDetailsView = Bundle.main.loadNibNamed("DetailView", owner: self, options: nil)?.first as! DetailView
+        detailView = trackDetailsView
+        //setupMainPageController()
+        //
+        midCollectionView.delegate = self
+        midCollectionView.dataSource = self
+        bottomCollectionView.delegate = self
+        bottomCollectionView.dataSource = self
+        setupMidCollectionView()
+        setupBottomCollectionView()
         initSetup()
-        
         setupButton()
         
-       // video.load(withVideoId: "MUws5oXXYa8")
-        // Do any additional setup after loading the view.
     }
     
-    func setupMainPageController() {
+    
+    
+    //MARK: - setup mid collectionview
+    private func setupMidCollectionView() {
         
-        
-        view.addSubview(mainContentView)
-        mainContentView.backgroundColor = .clear
-        mainContentView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+        midCollectionView.showsHorizontalScrollIndicator = false
+        scrollContentView.addSubview(midCollectionView)
+        midCollectionView.translatesAutoresizingMaskIntoConstraints = false 
+        midCollectionView.backgroundColor = .green
+        midCollectionView.snp.makeConstraints { make in
+            make.left.equalTo(playlistLabel.snp.left)
+            make.right.equalTo(view)
+            
+            make.top.equalTo(playlistLabel.snp.bottom)
+            //
+            //make.height.lessThanOrEqualToSuperview()
             make.height.equalTo(200)
+        }
+        
+        
+        //midCollectionViewController.reloadData()
+    }
+    private func setupBottomCollectionView() {
+        scrollContentView.addSubview(bottomCollectionView)
+        bottomCollectionView.snp.makeConstraints { make in
+            make.left.equalTo(playlistLabel.snp.left)
+            make.right.equalTo(view)
+            make.top.equalTo(playlistLabel2.snp.bottom)
+            //
+            //make.height.lessThanOrEqualToSuperview()
+            make.height.equalTo(200)
+        }
+    }
+    private func setupScrollView() {
+        view.addSubview(scrollView)
+        
+        scrollView.snp.makeConstraints { make in
+            make.left.top.right.bottom.equalTo(view)
+        }
+        
+        scrollView.addSubview(scrollContentView)
+        scrollContentView.snp.makeConstraints { make in
+            
+            make.top.bottom.equalTo(scrollView)
+            
+            make.left.right.equalTo(view)
+            make.width.equalTo(scrollView)
+            make.height.equalTo(scrollView)
+           
+        }
+        
+        scrollContentView.addSubview(mainContentView)
+
+        mainContentView.backgroundColor = .cyan
+        mainContentView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(scrollContentView)
+            make.height.equalTo(210)
         }
         thePageVC = MainPageViewController()
         addChild(thePageVC)
         thePageVC.view.backgroundColor = .clear
-        
+
         thePageVC.view.translatesAutoresizingMaskIntoConstraints = false
 
         // add the page VC's view to our container view
         mainContentView.addSubview(thePageVC.view)
-        //проблема з констрейнами Пейджвью контроллера
         
+
         thePageVC.view.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalTo(mainContentView)
-//            make.centerX.equalTo(mainContentView)
-//            make.centerY.equalTo(mainContentView)
-//            make.width.equalTo(mainContentView.snp.width)
-//            make.height.equalTo(mainContentView.snp.height)
+            //make.leading.top.trailing.bottom.equalTo(mainContentView)
+            make.edges.equalTo(mainContentView)
         }
+//        thePageVC.pages.forEach { page in
+//            page.view.addTapGesture {
+//                print("this prints from view controller ")
+//            }
+//        }
         
         thePageVC.didMove(toParent: self)
         //MARK: - adding Playlist label
-        view.addSubview(playlistLabel)
+//        view.addSubview(playlistLabel)
+        scrollContentView.addSubview(playlistLabel)
         playlistLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(14)
             make.top.equalTo(mainContentView.snp.bottom).offset(14)
             
         }
-        
-        
+        //MARK: -  adding Second Playlist Label
+        scrollContentView.addSubview(playlistLabel2)
+        playlistLabel2.snp.makeConstraints { make in
+            make.leading.equalTo(playlistLabel.snp.leading)
+            //make.top.equalTo(mainContentView.snp.bottom)
+            make.top.equalTo(playlistLabel.snp.bottom).offset(200)
+            
+        }
     }
-    
-
-    
     func setupButton() {
         detailView.addSubview(arrowButton)
         
@@ -130,22 +216,25 @@ class ViewController: UIViewController {
     
     func initSetup() {
         
+        view.addSubview(detailView)
+        
         detailView.translatesAutoresizingMaskIntoConstraints = false
         detailView.snp.makeConstraints { make in
-            make.height.equalTo(60)
+            make.height.equalTo(44)
             
             make.bottom.leading.trailing.equalToSuperview()
         }
         detailView.backgroundColor = UIColor(hexString: "#EE4289")
+        detailView.clipsToBounds = true
+        detailView.layer.cornerRadius = 16
+        detailView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
     }
-    
-    
     @objc func arrowButtonTapped() {
         if (isBottomSheetIsShown) {
             UIView.animate(withDuration: 0.3, animations: {
                 
                 self.detailView.snp.updateConstraints { make in
-                    make.height.equalTo(60)
+                    make.height.equalTo(44)
                     
                 }
                 
@@ -185,10 +274,64 @@ class ViewController: UIViewController {
     }
     
 
-    
 
 }
 
+extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == self.midCollectionView {
+            print("bla bla ")
+            
+            //arrowButtonTapped()
+        } else {
+            print("bottom collection view")
+            arrowButtonTapped()
+        }
+        
+    }
+    // MARK: UICollectionViewDataSource
+
+     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+
+     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of items
+        return 4
+    }
+
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         
+         if collectionView == self.midCollectionView {
+         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MidCollectionViewCell.reuseIdentifier, for: indexPath) as! MidCollectionViewCell
+             
+         cell.imageView.image = UIImage(systemName: "sun.fill")
+         print("cell executed")
+         
+    
+        return cell
+         } else {
+             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BottomCollectionViewCell.reuseIdentifier, for: indexPath) as! BottomCollectionViewCell
+             
+             print("bottom cell executed")
+            return cell
+         }
+    }
+
+}
+
+
+extension ViewController : UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == self.midCollectionView {
+        return CGSize(width: 160, height: 150)
+        } else {
+            return CGSize(width: 135, height: 185)
+        }
+    }
+}
 
 
 
@@ -211,4 +354,24 @@ extension UIColor {
         }
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
+}
+
+extension UIView {
+    
+    func addTapGesture(action : @escaping ()->Void ){
+        let tap = MyTapGestureRecognizer(target: self , action: #selector(self.handleTap(_:)))
+        tap.action = action
+        tap.numberOfTapsRequired = 1
+        
+        self.addGestureRecognizer(tap)
+        self.isUserInteractionEnabled = true
+        
+    }
+    @objc func handleTap(_ sender: MyTapGestureRecognizer) {
+        sender.action!()
+    }
+}
+
+class MyTapGestureRecognizer: UITapGestureRecognizer {
+    var action : (()->Void)? = nil
 }

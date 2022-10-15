@@ -1,5 +1,5 @@
 //
-//  MidCollectionViewController.swift
+//  BottomCollectionView.swift
 //  YTtry1
 //
 //  Created by Nephilim  on 10/14/22.
@@ -7,11 +7,8 @@
 
 import UIKit
 
+class BottomCollectionView: UICollectionView{
 
-
-class MidCollectionView: UICollectionView {
- 
-    
     var flowLayout: UICollectionViewFlowLayout = {
        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -22,26 +19,15 @@ class MidCollectionView: UICollectionView {
         return layout
     }()
     
-    
-     func viewDidLoad() {
-     
-    }
-
-    
-    
     init() {
         super.init(frame: .zero, collectionViewLayout: flowLayout)
+        backgroundColor = .clear
+        register(BottomCollectionViewCell.self, forCellWithReuseIdentifier: BottomCollectionViewCell.reuseIdentifier)
         
-        register(MidCollectionViewCell.self, forCellWithReuseIdentifier: MidCollectionViewCell.reuseIdentifier)
- 
     }
-    
-    
-    
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
+}
 

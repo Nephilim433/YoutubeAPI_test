@@ -154,7 +154,7 @@
                 <constraint firstItem="Xy9-YZ-rvJ" firstAttribute="leading" secondItem="iDx-h6-4a8" secondAttribute="leading" constant="20" id="5ie-Wn-gBS"/>
                 <constraint firstItem="Xy9-YZ-rvJ" firstAttribute="top" secondItem="iDx-h6-4a8" secondAttribute="top" constant="45" id="ICl-kE-Jfq"/>
                 <constraint firstItem="Xy9-YZ-rvJ" firstAttribute="trailing" secondItem="iDx-h6-4a8" secondAttribute="trailing" constant="-20" id="OPj-oa-ObD"/>
-                <constraint firstItem="iDx-h6-4a8" firstAttribute="bottom" secondItem="Xy9-YZ-rvJ" secondAttribute="bottom" constant="20" id="UjZ-Nd-kSG"/>
+                <constraint firstItem="iDx-h6-4a8" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Xy9-YZ-rvJ" secondAttribute="bottom" constant="20" id="UjZ-Nd-kSG"/>
             </constraints>
             <connections>
                 <outlet property="currentTimeSlider" destination="Q7X-gb-XuO" id="SUr-yM-SUT"/>

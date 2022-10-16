@@ -25,9 +25,11 @@ class DetailView: UIView, YTPlayerViewDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         playerView.delegate = self
         
-        playerView.load(withVideoId: "YjU5JAPtwwQ", playerVars: ["autoplay" : 1, "controls": 0, "playsinline": 1, "rel": 0])
+        //playerView.load(withVideoId: "YjU5JAPtwwQ", playerVars: ["autoplay" : 1, "controls": 0, "playsinline": 1, "rel": 0])
+        playerView.load(withPlaylistId: "UU-lHJZR3Gqxm24_Vd_AJ5Yw")
     }
     
     
@@ -38,7 +40,7 @@ class DetailView: UIView, YTPlayerViewDelegate {
     
     private func playVideo(videoID: String = "YjU5JAPtwwQ") {
         
-        playerView.load(withVideoId: videoID, playerVars: ["autoplay" : 1, "controls": 0, "playsinline": 1, "rel": 0])
+        //playerView.load(withVideoId: videoID, playerVars: ["autoplay" : 1, "controls": 0, "playsinline": 1, "rel": 0])
     }
     
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
@@ -64,10 +66,13 @@ class DetailView: UIView, YTPlayerViewDelegate {
     }
     @IBAction func prevButtonPressed(_ sender: UIButton) {
         playerView.previousVideo()
+        self.playPauseButton.setImage(UIImage(named: "Pause"), for: .normal)
     }
     @IBAction func nextButtonPressed(_ sender: UIButton) {
-        //playerView.nextVideo()
+        
         observerCurrentTime()
+        playerView.nextVideo()
+        self.playPauseButton.setImage(UIImage(named: "Pause"), for: .normal)
     }
     
     @IBAction func playPauseButtonPressed(_ sender: UIButton) {

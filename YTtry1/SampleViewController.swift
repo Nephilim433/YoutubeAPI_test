@@ -10,7 +10,7 @@ import SnapKit
 
 class SampleViewController: UIViewController {
 
-    
+    var playlistID = ""
     var image : UIImageView = {
         
         var img = UIImageView()
@@ -38,9 +38,9 @@ class SampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        view.addTapGesture {
-            print("this prints from sampleviewcontroller" + self.nameLabel.text!)
-        }
+//        view.addTapGesture {
+//            print("this prints from sampleviewcontroller" + self.nameLabel.text!)
+//        }
         // Do any additional setup after loading the view.
     }
     

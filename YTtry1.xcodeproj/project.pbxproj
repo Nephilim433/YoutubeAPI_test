@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C646229828FB50B300F3D4EB /* ChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C646229728FB50B200F3D4EB /* ChannelModel.swift */; };
 		C65A575228F804230051DA03 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C65A575128F804230051DA03 /* SDWebImage */; };
 		C664CC6028F0185C0076AB14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664CC5F28F0185C0076AB14 /* AppDelegate.swift */; };
 		C664CC6228F0185C0076AB14 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C664CC6128F0185C0076AB14 /* SceneDelegate.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C646229728FB50B200F3D4EB /* ChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelModel.swift; sourceTree = "<group>"; };
 		C664CC5C28F0185C0076AB14 /* YTtry1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YTtry1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C664CC5F28F0185C0076AB14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C664CC6128F0185C0076AB14 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				C664CC6328F0185C0076AB14 /* ViewController.swift */,
 				C664CC8628F6F3430076AB14 /* Constants.swift */,
 				C664CC8828F6F4C90076AB14 /* Video.swift */,
+				C646229728FB50B200F3D4EB /* ChannelModel.swift */,
 				C664CC8A28F6F51E0076AB14 /* NetworkService.swift */,
 				C69EEE5928F9CF4400E1DEF4 /* DetailView */,
 				C664CC8228F5B9880076AB14 /* MainPageViewController.swift */,
@@ -237,6 +240,7 @@
 				C69EEE5328F9A6C800E1DEF4 /* BottomCollectionViewCell.swift in Sources */,
 				C664CC8128F5ACDA0076AB14 /* DetailView.swift in Sources */,
 				C664CC6228F0185C0076AB14 /* SceneDelegate.swift in Sources */,
+				C646229828FB50B300F3D4EB /* ChannelModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

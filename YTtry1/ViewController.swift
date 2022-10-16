@@ -12,7 +12,22 @@ import SnapKit
 
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MainPageDelegate {
+    func givePagesTapGesture() {
+        print("openDetailViewWith executes <<<<<<<<")
+        thePageVC.pages.forEach { page in
+            page.view.addTapGesture {
+                print("addTapGesture executes")
+                self.arrowButtonTapped()
+                self.detailView.playerView.load(withPlaylistId: page.playlistID)
+                self.detailView.playerView.playVideo()
+            }
+        }
+    }
+    
+    
+    
+    
     
     
     var networkService = NetworkService()
@@ -62,10 +77,6 @@ class ViewController: UIViewController {
     var bottomCollectionView = BottomCollectionView()
     var detailView = DetailView()
     
-    
-    
-    
-    
     private var isBottomSheetIsShown = false
     
     var arrowButton: UIButton = {
@@ -88,12 +99,20 @@ class ViewController: UIViewController {
         
         let trackDetailsView = Bundle.main.loadNibNamed("DetailView", owner: self, options: nil)?.first as! DetailView
         detailView = trackDetailsView
-        //setupMainPageController()
-        //
+        
+        
+        
         midCollectionView.delegate = self
         midCollectionView.dataSource = self
         bottomCollectionView.delegate = self
         bottomCollectionView.dataSource = self
+        
+        thePageVC.vcDelegate = self
+        networkService.combineChannelModel()
+        
+        
+        
+        
         setupMidCollectionView()
         setupBottomCollectionView()
         initSetup()
@@ -101,6 +120,7 @@ class ViewController: UIViewController {
         
     }
     
+
     
     
     //MARK: - setup mid collectionview
@@ -281,6 +301,9 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.midCollectionView {
             print("bla bla ")
+            arrowButtonTapped()
+            detailView.playerView.load(withPlaylistId: "UU16K9cMnL5DjXksOo0FjR_A")
+            detailView.playerView.playVideo()
             
             //arrowButtonTapped()
         } else {
@@ -308,14 +331,14 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MidCollectionViewCell.reuseIdentifier, for: indexPath) as! MidCollectionViewCell
              
          cell.imageView.image = UIImage(systemName: "sun.fill")
-         print("cell executed")
+         //print("cell executed")
          
     
         return cell
          } else {
              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BottomCollectionViewCell.reuseIdentifier, for: indexPath) as! BottomCollectionViewCell
              
-             print("bottom cell executed")
+             //print("bottom cell executed")
             return cell
          }
     }

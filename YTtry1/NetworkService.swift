@@ -11,6 +11,7 @@ import SwiftyJSON
 
 protocol NetworkServiceDelegate {
     func videosFetched(_ vidoes: [Video])
+    func channelsFetched(_ channels: [ChannelModel])
 }
 protocol NetworkServiceDelegate2 {
     func mapStatisticts()
@@ -27,24 +28,67 @@ class NetworkService {
     
     
     
-    func getUploadPlaylist() {
-        let url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=UC-lHJZR3Gqxm24_Vd_AJ5Yw&key=AIzaSyCIXNoadAqOlUtjk7irFeE3GYLPRHpcRcE"
-        AF.request(url).responseJSON { dataResponse in
-            switch dataResponse.result {
-            case .success(let value):
-                let valueJson: JSON = JSON(value)
-                dump(valueJson)
-                let uploadPlaylist = valueJson["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"].string
-                print("uploadPlaylist is \(uploadPlaylist)")
-                
+    func combineChannelModel() {
+        var models = [ChannelModel]()
         
-            case .failure(let error):
-                print(error)
+        Constants.CHANNEL_IDS.forEach { channelID in
             
-            }
+            let uploadPlaylistUrl = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=\(channelID)&key=AIzaSyCIXNoadAqOlUtjk7irFeE3GYLPRHpcRcE"
+            
+            AF.request(uploadPlaylistUrl).responseJSON { dataResponse in
+                switch dataResponse.result {
+                case .success(let value):
+                    let valueJson: JSON = JSON(value)
+                    //dump(valueJson)
+                    guard let uploadPlaylist = valueJson["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"].string else { return }
                     
+                    print("uploadPlaylist is \(uploadPlaylist)")
+                    print("we got the upload playlist ID")
+                    let bannerTitleurl = "https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id=\(channelID)&key=\(Constants.API_KEY)"
+                    
+                    
+                    AF.request(bannerTitleurl).responseJSON(completionHandler: { response in
+                        
+                        switch response.result {
+                        case .success(let value):
+                            let valueJson: JSON = JSON(value)
+                            guard let banner = valueJson["items"][0]["brandingSettings"]["image"]["bannerExternalUrl"].string else {return}
+                            guard let title = valueJson["items"][0]["brandingSettings"]["channel"]["title"].string else {return}
+                            let subsCountUrl = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=\(channelID)&key=AIzaSyCIXNoadAqOlUtjk7irFeE3GYLPRHpcRcE"
+                            AF.request(subsCountUrl).responseJSON { dataResponse  in
+                                switch dataResponse.result {
+                                case .success(let value):
+                                    let valueJson: JSON = JSON(value)
+                                    guard let subsCount = valueJson["items"][0]["statistics"]["subscriberCount"].string else { return }
+                                    
+                                    let model = ChannelModel(uploadPlaylist: uploadPlaylist, bannerUrl: banner, subsCount: subsCount,title: title)
+                                    models.append(model)
+                                    if Constants.CHANNEL_IDS.count == models.count {
+                                        self.delegate?.channelsFetched(models)
+                                        
+//                                        self.vcDelegate?.openDetailViewWith(models) // enebling gesture and opening detail view
+                                    }
+                                    
+                                case .failure(let error):
+                                    print(error)
+                                }
+                                    
+                            }
+                        case .failure(let error):
+                            print(error)
+                        }
+                    })
+                    //pewdiepie's uploadlist ID : UU-lHJZR3Gqxm24_Vd_AJ5Yw
+                case .failure(let error):
+                    print(error)
+                
+                }
+            }
         }
+        
     }
+    
+    
     
     
     
@@ -85,30 +129,7 @@ class NetworkService {
     }
     
    
-    
-    func fetchChannnelInfo() {
-        
-        let url = "https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id=UC-lHJZR3Gqxm24_Vd_AJ5Yw&key=\(Constants.API_KEY)"
-        let jsonDecoder = JSONDecoder()
-        
-        AF.request(url).responseDecodable(of: ThirdResponse.self, decoder: jsonDecoder) { response in
-            switch response.result {
-            case .success(let value):
-                
-                guard let banners = value.items else {return}
-                if let banner = banners.first?.bannerExternalUrl {
-                    //print(banner)
-                }
-                
-        
-            case .failure(let error):
-                print(error)
-            
-            }
-            
-        }
-    
-    }
+
     
     func fetchVideosFromPlaylists() {
         
@@ -125,6 +146,7 @@ class NetworkService {
                 let objects = try decoder.decode(FirstResponse.self, from: data)
                 if objects.items != nil {
                     self.delegate?.videosFetched(objects.items!)
+                    print("objects.items = \(objects.items!)")
                     self.fetchVideoStatisticInfo(objects.items!) { success in
                         if success {
                             self.delegate2?.mapStatisticts()

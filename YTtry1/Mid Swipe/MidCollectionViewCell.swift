@@ -13,30 +13,23 @@ class MidCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "Cell"
     
     
-    var imageView2 : UIImageView?
+    var imageView : UIImageView?
     
     
     
-    var imageView : UIImageView = {
-        
-        let rect = CGRect(x: 0, y: 0, width: 10, height: 10)
-        let image = UIImage(named: "cover")
-        let img = UIImageView(frame: rect)
-        img.image = image
-        img.contentMode = .scaleToFill
-         
-        
-        
-        return img
+    
+    
+//    var image: UIImage? {
+//        didSet {
+//            imageView.image = image
+//        }
+//    }
+    
+    var videoNameLabel :UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        return label
     }()
-    
-    var image: UIImage? {
-        didSet {
-            imageView.image = image
-        }
-    }
-    
-    var videoNameLabel = UILabel()
     var videoViewsCount = UILabel()
     
     
@@ -45,19 +38,15 @@ class MidCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         let rect2 = CGRect(x: self.bounds.minX, y: self.bounds.minY, width: contentView.frame.width, height: 70)
-        imageView2 = UIImageView(frame: rect2)
-        imageView2?.image = UIImage(named: "oracle")
-        imageView2?.contentMode = .center
-            //.scaleToFill
-        
-        //.scaleAspectFill
-        //.scaleAspectFit
-        
-        //imageView2?.clipsToBounds = true
+        imageView = UIImageView(frame: rect2)
+        imageView?.image = UIImage(named: "oracle")
+        imageView?.contentMode = .center
+        videoNameLabel.textColor = .white
+        videoViewsCount.textColor = UIColor(hexString: "#707070")
         contentView.backgroundColor = .clear
-        addSubview(imageView2!)
-        imageView2?.layer.cornerRadius = 10
-        imageView2?.clipsToBounds = true
+        addSubview(imageView!)
+        imageView?.layer.cornerRadius = 10
+        imageView?.clipsToBounds = true
         setupView()
     
     }
@@ -68,14 +57,14 @@ class MidCollectionViewCell: UICollectionViewCell {
         
         addSubview(videoNameLabel)
         videoNameLabel.snp.makeConstraints { make in
-            make.left.right.equalTo(imageView2!)
-            make.top.equalTo(imageView2!.snp.bottom).offset(10)
+            make.left.right.equalTo(imageView!)
+            make.top.equalTo(imageView!.snp.bottom).offset(10)
         }
         
         videoNameLabel.text = "ALoha Alova"
         addSubview(videoViewsCount)
         videoViewsCount.snp.makeConstraints { make in
-            make.left.right.equalTo(imageView2!)
+            make.left.right.equalTo(imageView!)
             make.top.equalTo(videoNameLabel.snp.bottom)
         }
         videoViewsCount.font = UIFont.systemFont(ofSize: 12)

@@ -7,55 +7,59 @@
 
 import UIKit
 import YouTubeiOSPlayerHelper
-import BottomSheet
 import SnapKit
 
 
 
-class ViewController: UIViewController, MainPageDelegate {
+class ViewController: UIViewController, MainPageDelegate, NetworkServiceForViewController {
+    
+    
+    
+    func videosFetched(_ vidoes: [VideoModel]) {
+        //print("vidoes.count \(vidoes.count) <<<<>>>>><<<<<>>><<<<>>><<<")
+        self.videoModels = vidoes
+        midCollectionView.reloadData()
+    }
+    func videosFetched2(_ vidoes: [VideoModel]) {
+        print("vidoes2.count \(vidoes.count) <<<<>>>>><<<<<>>><<<<>>><<<")
+        self.videoModels2 = vidoes
+        bottomCollectionView.reloadData()
+    }
+    
     func givePagesTapGesture() {
-        print("openDetailViewWith executes <<<<<<<<")
+        //print("openDetailViewWith executes <<<<<<<<")
         thePageVC.pages.forEach { page in
             page.view.addTapGesture {
                 print("addTapGesture executes")
                 self.arrowButtonTapped()
-                self.detailView.playerView.load(withPlaylistId: page.playlistID)
-                self.detailView.playerView.playVideo()
+                self.detailView.playVideo(playlistID: page.playlistID)
+                //self.detailView.playerView.playVideo()
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    var networkService = NetworkService()
-    
+
     
     var scrollView : UIScrollView = {
        let sc = UIScrollView()
         sc.alwaysBounceVertical = true
         sc.showsVerticalScrollIndicator = false
-        //how to make the ScrollView do not jump up ?
-        sc.backgroundColor = .blue
+        sc.backgroundColor = .clear
         return sc
     }()
     var scrollContentView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .orange
+        v.backgroundColor = .clear
         return v
         
     }()
     var mainContentView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .gray
+        v.backgroundColor = .clear
         return v
         
     }()
-    
     var playlistLabel: UILabel = {
         var label = UILabel()
         label.text = "Playlist Name"
@@ -63,7 +67,6 @@ class ViewController: UIViewController, MainPageDelegate {
         label.textColor = .white
         return label
     }()
-    
     var playlistLabel2: UILabel = {
         var label = UILabel()
         label.text = "Playlist Name"
@@ -75,32 +78,40 @@ class ViewController: UIViewController, MainPageDelegate {
     var thePageVC: MainPageViewController!
     var midCollectionView = MidCollectionView()
     var bottomCollectionView = BottomCollectionView()
-    var detailView = DetailView()
+    
+    var detailView :DetailView = {
+        let view = Bundle.main.loadNibNamed("DetailView", owner: self, options: nil)?.first as! DetailView
+        return view
+    }()
+    
+    var networkService = NetworkService()
+    var videoModels = [VideoModel]()
+    var videoModels2 = [VideoModel]()
     
     private var isBottomSheetIsShown = false
     
     var arrowButton: UIButton = {
         let image = UIImage(named: "Close_Open")
         let butt = UIButton(type: .custom)
+        
         butt.setImage(image, for: .normal)
+        butt.imageView?.transform = (butt.imageView?.transform.rotated(by: .pi))!
         return butt
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.layer.removeAllAnimations()
+    }
+    
     override func viewDidLoad() {
-
         title = "Youtube API"
-        
-        setupScrollView()
         view.backgroundColor = UIColor(hexString: "#1D1B26")
+        setupScrollView()
+        
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         
         super.viewDidLoad()
-        
-        let trackDetailsView = Bundle.main.loadNibNamed("DetailView", owner: self, options: nil)?.first as! DetailView
-        detailView = trackDetailsView
-        
-        
         
         midCollectionView.delegate = self
         midCollectionView.dataSource = self
@@ -108,50 +119,65 @@ class ViewController: UIViewController, MainPageDelegate {
         bottomCollectionView.dataSource = self
         
         thePageVC.vcDelegate = self
+        networkService.vcDelegate = self
+        
         networkService.combineChannelModel()
-        
-        
+        networkService.fetchVideosFromPlaylists()
         
         
         setupMidCollectionView()
         setupBottomCollectionView()
         initSetup()
         setupButton()
-        
+        detailView.playPauseButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
     }
-    
-
     
     
     //MARK: - setup mid collectionview
     private func setupMidCollectionView() {
-        
+        //MARK: - adding Playlist label
+
+        scrollContentView.addSubview(playlistLabel)
+        playlistLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(14)
+
+            make.top.equalTo(mainContentView.snp.bottom)
+            
+        }
         midCollectionView.showsHorizontalScrollIndicator = false
         scrollContentView.addSubview(midCollectionView)
         midCollectionView.translatesAutoresizingMaskIntoConstraints = false 
-        midCollectionView.backgroundColor = .green
+        midCollectionView.backgroundColor = .clear
         midCollectionView.snp.makeConstraints { make in
             make.left.equalTo(playlistLabel.snp.left)
             make.right.equalTo(view)
             
             make.top.equalTo(playlistLabel.snp.bottom)
-            //
-            //make.height.lessThanOrEqualToSuperview()
-            make.height.equalTo(200)
+            
+            make.height.equalTo(150)
         }
-        
-        
-        //midCollectionViewController.reloadData()
+    
     }
     private func setupBottomCollectionView() {
+        //MARK: -  adding Second Playlist Label
+        scrollContentView.addSubview(playlistLabel2)
+        playlistLabel2.snp.makeConstraints { make in
+            make.leading.equalTo(playlistLabel.snp.leading)
+            //make.height.equalTo(playlistLabel.snp.height)
+            //make.top.equalTo(mainContentView.snp.bottom)
+            make.top.equalTo(midCollectionView.snp_bottomMargin).offset(5)
+            //make.top.equalTo(playlistLabel.snp.bottom).offset(200)
+            
+            //make.top.equalTo(midCollectionView.snp.bottom)
+            
+        }
+        
         scrollContentView.addSubview(bottomCollectionView)
         bottomCollectionView.snp.makeConstraints { make in
             make.left.equalTo(playlistLabel.snp.left)
             make.right.equalTo(view)
             make.top.equalTo(playlistLabel2.snp.bottom)
-            //
-            //make.height.lessThanOrEqualToSuperview()
-            make.height.equalTo(200)
+            make.height.equalTo(220)
         }
     }
     private func setupScrollView() {
@@ -163,21 +189,19 @@ class ViewController: UIViewController, MainPageDelegate {
         
         scrollView.addSubview(scrollContentView)
         scrollContentView.snp.makeConstraints { make in
-            
+
             make.top.bottom.equalTo(scrollView)
-            
             make.left.right.equalTo(view)
             make.width.equalTo(scrollView)
             make.height.equalTo(scrollView)
-           
         }
         
         scrollContentView.addSubview(mainContentView)
 
-        mainContentView.backgroundColor = .cyan
+        mainContentView.backgroundColor = .clear
         mainContentView.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(scrollContentView)
-            make.height.equalTo(210)
+            make.height.equalTo(255)
         }
         thePageVC = MainPageViewController()
         addChild(thePageVC)
@@ -185,38 +209,21 @@ class ViewController: UIViewController, MainPageDelegate {
 
         thePageVC.view.translatesAutoresizingMaskIntoConstraints = false
 
-        // add the page VC's view to our container view
+        
         mainContentView.addSubview(thePageVC.view)
         
 
         thePageVC.view.snp.makeConstraints { make in
-            //make.leading.top.trailing.bottom.equalTo(mainContentView)
+            
             make.edges.equalTo(mainContentView)
         }
-//        thePageVC.pages.forEach { page in
-//            page.view.addTapGesture {
-//                print("this prints from view controller ")
-//            }
-//        }
+
         
         thePageVC.didMove(toParent: self)
-        //MARK: - adding Playlist label
-//        view.addSubview(playlistLabel)
-        scrollContentView.addSubview(playlistLabel)
-        playlistLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(14)
-            make.top.equalTo(mainContentView.snp.bottom).offset(14)
-            
-        }
-        //MARK: -  adding Second Playlist Label
-        scrollContentView.addSubview(playlistLabel2)
-        playlistLabel2.snp.makeConstraints { make in
-            make.leading.equalTo(playlistLabel.snp.leading)
-            //make.top.equalTo(mainContentView.snp.bottom)
-            make.top.equalTo(playlistLabel.snp.bottom).offset(200)
-            
-        }
+        
     }
+    
+ 
     func setupButton() {
         detailView.addSubview(arrowButton)
         
@@ -225,7 +232,7 @@ class ViewController: UIViewController, MainPageDelegate {
         arrowButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(detailView.snp.top)
-            make.height.equalTo(40)
+            make.height.equalTo(37)
         }
 
     }
@@ -234,14 +241,16 @@ class ViewController: UIViewController, MainPageDelegate {
         return .lightContent
     }
     
+    
     func initSetup() {
-        
-        view.addSubview(detailView)
+
+        navigationController?.view.addSubview(detailView)
         
         detailView.translatesAutoresizingMaskIntoConstraints = false
         detailView.snp.makeConstraints { make in
             make.height.equalTo(44)
-            
+            //make.bottom.leading.trailing.equalTo(window)
+            //make.width.equalTo(window.snp.width)
             make.bottom.leading.trailing.equalToSuperview()
         }
         detailView.backgroundColor = UIColor(hexString: "#EE4289")
@@ -250,47 +259,56 @@ class ViewController: UIViewController, MainPageDelegate {
         detailView.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMinXMinYCorner]
     }
     @objc func arrowButtonTapped() {
-        if (isBottomSheetIsShown) {
-            UIView.animate(withDuration: 0.3, animations: {
-                
-                self.detailView.snp.updateConstraints { make in
-                    make.height.equalTo(44)
+    
+            if (isBottomSheetIsShown) {
+                UIView.animate(withDuration: 0.3,  animations: {
+                    self.detailView.snp.updateConstraints { make in
+                        make.height.equalTo(37)
+                    }
+                    self.isBottomSheetIsShown = false
                     
-                }
-                
+                    
+                    self.view.alpha = 1
+                    self.arrowButton.imageView?.transform = (self.arrowButton.imageView?.transform.rotated(by: .pi))!
+                    
+                self.detailView.layoutIfNeeded()
+                self.navigationController?.view.layoutIfNeeded()
                 self.view.layoutIfNeeded()
-                self.isBottomSheetIsShown = false
-                
-                self.arrowButton.imageView?.transform = (self.arrowButton.imageView?.transform.rotated(by: .pi))!
             })
             
         } else {
-            // show the bottom sheet
-            UIView.animate(withDuration: 0.2, animations: {
+             //show the bottom sheet
+            UIView.animate(withDuration: 0.5, delay: 0, options: .layoutSubviews, animations: {
+                self.view.alpha = 0.5
                 
                 self.detailView.snp.updateConstraints { make in
-                    make.height.equalTo(620)
-                    
+                    make.height.equalTo(580)
                 }
+                
                 self.view.layoutIfNeeded()
+                self.navigationController?.view.layoutIfNeeded()
             }) { (status) in
                 // completion code
                 self.isBottomSheetIsShown = true
                 
+                
                 self.arrowButton.imageView?.transform = (self.arrowButton.imageView?.transform.rotated(by: .pi))!
-    
-                UIView.animate(withDuration: 0.1, animations: {
-                    
+                
+                //window?.subviews.last?.setNeedsLayout()
+                UIView.animate(withDuration: 0.2, animations: {
                     self.detailView.snp.updateConstraints { make in
-                        make.height.equalTo(600)
+                        make.height.equalTo(570)
                     }
-                    
+
+                    self.navigationController?.view.layoutIfNeeded()
                     self.view.layoutIfNeeded()
+                    self.detailView.layoutIfNeeded()
                 }) { (status) in
-                    
+
                 }
             }
         }
+        
     }
     
 
@@ -301,12 +319,22 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.midCollectionView {
             print("bla bla ")
-            arrowButtonTapped()
-            detailView.playerView.load(withPlaylistId: "UU16K9cMnL5DjXksOo0FjR_A")
-            detailView.playerView.playVideo()
+            let model = videoModels[indexPath.item]
             
+            detailView.playVideo(videoID:model.videoID )
+            detailView.videoNameLabel.text = model.videoName
+            //detailView.playerView.load(withPlaylistId: "UU16K9cMnL5DjXksOo0FjR_A")
+            //detailView.playerView.playVideo()
+            arrowButtonTapped()
             //arrowButtonTapped()
         } else {
+            let model = videoModels2[indexPath.item]
+            detailView.playVideo(videoID:model.videoID )
+            detailView.videoNameLabel.text = model.videoName
+            //detailView.playerView.load(withPlaylistId: "UU16K9cMnL5DjXksOo0FjR_A")
+            //detailView.playerView.playVideo()
+            arrowButtonTapped()
+            //arrowButtonTapped()
             print("bottom collection view")
             arrowButtonTapped()
         }
@@ -330,13 +358,28 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
          if collectionView == self.midCollectionView {
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MidCollectionViewCell.reuseIdentifier, for: indexPath) as! MidCollectionViewCell
              
-         cell.imageView.image = UIImage(systemName: "sun.fill")
-         //print("cell executed")
-         
-    
+             if videoModels.count == 0 {
+                 cell.imageView?.image = UIImage(named: "cover")
+             } else {
+                 let model = videoModels[indexPath.item]
+                  cell.imageView?.sd_setImage(with: URL(string: model.videoPreviewURL), placeholderImage: UIImage(named: "cover"))
+                 let viewsCount = Int(model.videoViewsCount)?.formattedWithSeparator
+                 cell.videoViewsCount.text = "\(viewsCount!) views"
+                 cell.videoNameLabel.text = model.videoName
+             }
+           
         return cell
          } else {
              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BottomCollectionViewCell.reuseIdentifier, for: indexPath) as! BottomCollectionViewCell
+             if videoModels2.count == 0 {
+                 cell.imageView?.image = UIImage(named: "cover")
+             } else {
+                 let model = videoModels2[indexPath.item]
+                  cell.imageView?.sd_setImage(with: URL(string: model.videoPreviewURL), placeholderImage: UIImage(named: "cover"))
+                 let viewsCount = Int(model.videoViewsCount)?.formattedWithSeparator
+                 cell.videoViewsCount.text = "\(viewsCount!) views"
+                 cell.videoNameLabel.text = model.videoName
+             }
              
              //print("bottom cell executed")
             return cell
@@ -355,9 +398,6 @@ extension ViewController : UICollectionViewDelegateFlowLayout {
         }
     }
 }
-
-
-
 
 extension UIColor {
     convenience init(hexString: String) {
@@ -397,4 +437,17 @@ extension UIView {
 
 class MyTapGestureRecognizer: UITapGestureRecognizer {
     var action : (()->Void)? = nil
+}
+
+extension Formatter {
+    static let withSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = " "
+        return formatter
+    }()
+}
+
+extension Numeric {
+    var formattedWithSeparator: String { Formatter.withSeparator.string(for: self) ?? "" }
 }

@@ -13,11 +13,15 @@ class BottomCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "Cell2"
     
     
-    var imageView2 : UIImageView?
+    var imageView : UIImageView?
     
     
     
-    var videoNameLabel = UILabel()
+    var videoNameLabel: UILabel = {
+       let label = UILabel()
+       label.numberOfLines = 2
+       return label
+   }()
     var videoViewsCount = UILabel()
     
     
@@ -26,19 +30,17 @@ class BottomCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         let rect2 = CGRect(x: self.bounds.minX, y: self.bounds.minY, width: 135, height: 135)
-        imageView2 = UIImageView(frame: rect2)
-        imageView2?.image = UIImage(named: "oracle")
-        imageView2?.contentMode = .scaleAspectFill
-            //.scaleToFill
-        
-        //.scaleAspectFill
-        //.scaleAspectFit
+        imageView = UIImageView(frame: rect2)
+        imageView?.image = UIImage(named: "oracle")
+        imageView?.contentMode = .scaleAspectFill
+        videoNameLabel.textColor = .white
+        videoViewsCount.textColor = UIColor(hexString: "#707070")
         
         
         contentView.backgroundColor = .clear
-        addSubview(imageView2!)
-        imageView2?.layer.cornerRadius = 10
-        imageView2?.clipsToBounds = true
+        addSubview(imageView!)
+        imageView?.layer.cornerRadius = 10
+        imageView?.clipsToBounds = true
         setupView()
     
     }
@@ -49,15 +51,15 @@ class BottomCollectionViewCell: UICollectionViewCell {
         
         addSubview(videoNameLabel)
         videoNameLabel.snp.makeConstraints { make in
-            make.left.right.equalTo(imageView2!)
-            make.top.equalTo(imageView2!.snp.bottom).offset(10)
+            make.left.right.equalTo(imageView!)
+            make.top.equalTo(imageView!.snp.bottom).offset(10)
         }
         
         videoNameLabel.text = "ALoha Alova"
         addSubview(videoViewsCount)
         
         videoViewsCount.snp.makeConstraints { make in
-            make.left.right.equalTo(imageView2!)
+            make.left.right.equalTo(imageView!)
             make.top.equalTo(videoNameLabel.snp.bottom)
         }
         videoViewsCount.font = UIFont.systemFont(ofSize: 12)

@@ -16,9 +16,9 @@ class MidCollectionView: UICollectionView {
        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
+        //layout.minimumInteritemSpacing = 10
         
-        layout.sectionInset = UIEdgeInsets(top: 1, left: 0, bottom: 5, right: 5)
+        layout.sectionInset = UIEdgeInsets(top: 17, left: 0, bottom: 0, right: 0)
         return layout
     }()
     

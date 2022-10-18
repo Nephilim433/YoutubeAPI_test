@@ -13,6 +13,8 @@ struct Video: Decodable {
     var title = ""
     var thumbnail = ""
     
+    var videoViewsCount = ""
+    
     
     enum CodingKeys: String, CodingKey {
         

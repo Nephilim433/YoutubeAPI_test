@@ -29,7 +29,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Hoc-g4-WIy" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="oGd-PN-vas">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" largeTitles="YES" id="oGd-PN-vas">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

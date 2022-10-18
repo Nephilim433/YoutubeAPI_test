@@ -13,13 +13,8 @@ protocol MainPageDelegate {
     func givePagesTapGesture()
 }
 
-class MainPageViewController: UIPageViewController, NetworkServiceDelegate,NetworkServiceDelegate2 {
+class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
    
-    
-    
-    var statistics : [VideoStatistics] = []
-    
-    
     var vcDelegate : MainPageDelegate?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -27,37 +22,17 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
     }
     
     var networkService = NetworkService()
-    var videos = [Video]()
+    //var videos = [Video]()
     var channels = [ChannelModel]()
     var pages: [SampleViewController] = [SampleViewController]()
-    
-    let colors: [UIColor] = [
-            .red,
-            .green,
-            .blue,
-            .cyan,
-            .yellow,
-            .orange
-        ]
-    
-    
+ 
     private var timer : Timer?
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-        //networkService.fetchChannnelInfo()
-        //MARK: - Don't forget to uncomment it !
-        //networkService.fetchVideosFromPlaylists()
         networkService.delegate = self
-        //networkService.delegate2 = self
         networkService.combineChannelModel()
-        
-        
-        
-
-        
-         
     }
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -67,9 +42,10 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
         super.init(coder: coder)
     }
     
+    //this is for autoswipe every 5 secs
     var currentIndex = 0
     @objc func swipeSlide() {
-        print("swipeSlide executed")
+        //print("swipeSlide executed")
         currentIndex = (currentIndex == pages.count - 1) ? 0 : currentIndex + 1
         
         self.setViewControllers([self.pages[currentIndex]], direction: .forward, animated: true, completion: nil)
@@ -77,7 +53,6 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
     
     
     //MARK: - NetworkService Methods
-    
     func channelsFetched(_ channels: [ChannelModel]) {
         //set the returned videos to outr video property
         self.channels = channels
@@ -102,46 +77,9 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate,Netwo
                 self.vcDelegate?.givePagesTapGesture()
                 self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.swipeSlide), userInfo: nil, repeats: true)
             }
-    }
-    }
-    
-    func videosFetched(_ vidoes: [Video]) {
-        //set the returned videos to outr video property
-        self.videos = vidoes
-        //refresh table view
-        DispatchQueue.main.async {
-        
-            for i in 0..<self.videos.count {
-            let vc = SampleViewController()
-            let video = self.videos[i]
-                print("is this working?")
-            vc.nameLabel.text = video.title
-            let url = URL(string: video.thumbnail)
-            vc.image.sd_setImage(with: url, completed: nil)
-            //vc.view.backgroundColor = colors[i]
-            //vc.image.image = UIImage(systemName: "tray.full")
-            self.pages.append(vc)
-                
         }
-            self.setViewControllers([self.pages[0]], direction: .forward, animated: false, completion: nil)
-    }
-        
-    }
-    
-    func mapStatisticts() {
-            //print("printing mapStat model = \(self.statistics)")
-            for i in 0..<self.videos.count {
-                self.pages[i].detailLabel.text = self.statistics[i].viewCount
-            }
-    }
-    
-    func mapBanner() {
-        
     }
 }
-
-
-
 
 
 
@@ -172,9 +110,6 @@ extension MainPageViewController: UIPageViewControllerDataSource {
     }
 }
 extension MainPageViewController: UIPageViewControllerDelegate {
-
-    // if you do NOT want the built-in PageControl (the "dots"), comment-out these funcs
-    
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return pages.count

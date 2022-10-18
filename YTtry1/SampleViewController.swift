@@ -28,7 +28,7 @@ class SampleViewController: UIViewController {
     }()
     var detailLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .green
+        label.textColor = UIColor(hexString: "#707070")
         label.font = UIFont(name: "HiraMinProN-W3", size: 10)
         label.text = "999999999 subscribers"
         return label
@@ -38,20 +38,19 @@ class SampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-//        view.addTapGesture {
-//            print("this prints from sampleviewcontroller" + self.nameLabel.text!)
-//        }
-        // Do any additional setup after loading the view.
     }
     
     private func setupView() {
         view.addSubview(image)
         image.snp.makeConstraints { make in
-            make.height.equalTo(180)
-            make.width.equalTo(339)
-            make.centerX.equalTo(view)
             
+            make.left.top.equalTo(view).offset(17)
+            make.right.equalTo(view).inset(17)
             make.bottom.equalTo(view)
+//            make.height.equalTo(180)
+//            make.width.equalTo(339)
+//            make.centerX.equalTo(view)
+//            make.bottom.equalTo(view)
         }
         image.clipsToBounds = true
         image.layer.cornerRadius = 10

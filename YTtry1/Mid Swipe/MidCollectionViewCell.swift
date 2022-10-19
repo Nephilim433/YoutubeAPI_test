@@ -12,47 +12,36 @@ class MidCollectionViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "Cell"
     
-    
     var imageView : UIImageView?
-    
-    
-    
-    
-    
-//    var image: UIImage? {
-//        didSet {
-//            imageView.image = image
-//        }
-//    }
-    
+
     var videoNameLabel :UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
+        label.textColor = .white
+        label.font = UIFont(name: Constants.SFProTextMedium, size: 17)
         return label
     }()
-    var videoViewsCount = UILabel()
-    
-    
-    
+    var videoViewsCount : UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(hexString: "#707070")
+        label.font = UIFont(name: Constants.SFProTextMedium, size: 12)
+        return label
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         let rect2 = CGRect(x: self.bounds.minX, y: self.bounds.minY, width: contentView.frame.width, height: 70)
         imageView = UIImageView(frame: rect2)
         imageView?.image = UIImage(named: "oracle")
-        imageView?.contentMode = .center
-        videoNameLabel.textColor = .white
-        videoViewsCount.textColor = UIColor(hexString: "#707070")
+        imageView?.contentMode = .scaleAspectFill
         contentView.backgroundColor = .clear
         addSubview(imageView!)
         imageView?.layer.cornerRadius = 10
         imageView?.clipsToBounds = true
         setupView()
-    
     }
-    
-    
-    
+
     private func setupView() {
         
         addSubview(videoNameLabel)
@@ -61,30 +50,12 @@ class MidCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(imageView!.snp.bottom).offset(10)
         }
         
-        videoNameLabel.text = "ALoha Alova"
         addSubview(videoViewsCount)
         videoViewsCount.snp.makeConstraints { make in
             make.left.right.equalTo(imageView!)
             make.top.equalTo(videoNameLabel.snp.bottom)
         }
-        videoViewsCount.font = UIFont.systemFont(ofSize: 12)
-        videoViewsCount.textColor = .gray
-        videoViewsCount.text = "99999999999"
-       
-        
-        
     }
-    
-    
-//    override var bounds :CGRect {
-//           didSet {
-//            //setupView()
-//            print("bounds got fired")
-//            
-//            //contentView.frame = bounds
-//        }
-//    }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

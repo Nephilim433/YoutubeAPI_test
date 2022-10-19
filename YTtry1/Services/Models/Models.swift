@@ -7,6 +7,21 @@
 
 import Foundation
 
+struct VideoModel {
+    var videoName = ""
+    var videoViewsCount = ""
+    var videoPreviewURL = ""
+    var videoID = ""
+    var videoLikesCount = ""
+}
+
+struct ChannelModel {
+    var uploadPlaylist = ""
+    var bannerUrl = ""
+    var subsCount = ""
+    var title = ""
+}
+
 struct Video: Decodable {
 
     var videoID = ""
@@ -14,7 +29,6 @@ struct Video: Decodable {
     var thumbnail = ""
     
     var videoViewsCount = ""
-    
     
     enum CodingKeys: String, CodingKey {
         
@@ -27,16 +41,13 @@ struct Video: Decodable {
         case thumbnail = "url"
         case videoId
     }
-    
-    
-   
+
     init (from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let snippetConteiner = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .snippet)
         //Parse title
         self.title = try snippetConteiner.decode(String.self, forKey: .title)
         //Parse thumbnail
-        
         let thumbnailsContainer = try snippetConteiner.nestedContainer(keyedBy: CodingKeys.self, forKey: .thumbnails)
         let maxresContainer = try thumbnailsContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .maxres)
         self.thumbnail = try maxresContainer.decode(String.self, forKey: .thumbnail)
@@ -44,7 +55,6 @@ struct Video: Decodable {
         //parse Video ID
         let resourceIdContainer = try snippetConteiner.nestedContainer(keyedBy: CodingKeys.self, forKey: .resourceId)
         self.videoID = try resourceIdContainer.decode(String.self, forKey: .videoId)
-        
     }
 }
 
@@ -80,7 +90,6 @@ struct VideoStatistics: Decodable {
     var viewCount = ""
     var likeCount = ""
     
-    
     enum CodingKeys : String, CodingKey {
         case statistics
         case viewCount
@@ -96,31 +105,4 @@ struct VideoStatistics: Decodable {
     }
 }
 
-struct ThirdResponse : Decodable {
-    var items: [ChannelBranding]?
-    enum CodingKeys : String, CodingKey {
-        case items
-    }
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.items = try container.decode([ChannelBranding].self, forKey: .items)
-    }
-}
 
-struct ChannelBranding: Decodable {
-    var bannerExternalUrl = ""
-    
-    enum CodingKeys: String , CodingKey {
-        
-        case brandingSettings
-        case image
-        case bannerExternalUrl
-    }
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let brandingSettingsContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .brandingSettings)
-        let imgeContainer = try brandingSettingsContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .image)
-        self.bannerExternalUrl = try imgeContainer.decode(String.self, forKey: .bannerExternalUrl)
-        
-    }
-}

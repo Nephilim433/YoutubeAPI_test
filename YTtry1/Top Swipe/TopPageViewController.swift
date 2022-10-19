@@ -1,5 +1,5 @@
 //
-//  MainPageViewController.swift
+//  TopPageViewController.swift
 //  YTtry1
 //
 //  Created by Nephilim  on 10/11/22.
@@ -13,7 +13,7 @@ protocol MainPageDelegate {
     func givePagesTapGesture()
 }
 
-class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
+class TopPageViewController: UIPageViewController, NetworkServiceTPVCDelegate {
    
     var vcDelegate : MainPageDelegate?
     
@@ -22,7 +22,7 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
     }
     
     var networkService = NetworkService()
-    //var videos = [Video]()
+    
     var channels = [ChannelModel]()
     var pages: [SampleViewController] = [SampleViewController]()
  
@@ -31,7 +31,7 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-        networkService.delegate = self
+        networkService.tpvcDelegate = self
         networkService.combineChannelModel()
     }
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
@@ -45,20 +45,18 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
     //this is for autoswipe every 5 secs
     var currentIndex = 0
     @objc func swipeSlide() {
-        //print("swipeSlide executed")
         currentIndex = (currentIndex == pages.count - 1) ? 0 : currentIndex + 1
         
         self.setViewControllers([self.pages[currentIndex]], direction: .forward, animated: true, completion: nil)
     }
     
-    
     //MARK: - NetworkService Methods
     func channelsFetched(_ channels: [ChannelModel]) {
-        //set the returned videos to outr video property
+        
         self.channels = channels
         //refresh table view
         DispatchQueue.main.async {
-            //print("channels = \(self.channels)")
+            
             for i in 0..<self.channels.count {
             let vc = SampleViewController()
             let channel = self.channels[i]
@@ -67,8 +65,7 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
             vc.detailLabel.text = "\(channel.subsCount) subscribers"
             let url = URL(string: channel.bannerUrl)
             vc.image.sd_setImage(with: url, completed: nil)
-            //vc.view.backgroundColor = colors[i]
-            //vc.image.image = UIImage(systemName: "tray.full")
+            
             self.pages.append(vc)
                 
         }
@@ -81,9 +78,7 @@ class MainPageViewController: UIPageViewController, NetworkServiceDelegate {
     }
 }
 
-
-
-extension MainPageViewController: UIPageViewControllerDataSource {
+extension TopPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
         guard let viewControllerIndex = pages.firstIndex(of: viewController as! SampleViewController) else { return nil }
@@ -109,7 +104,7 @@ extension MainPageViewController: UIPageViewControllerDataSource {
         return pages[nextIndex]
     }
 }
-extension MainPageViewController: UIPageViewControllerDelegate {
+extension TopPageViewController: UIPageViewControllerDelegate {
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return pages.count

@@ -11,26 +11,21 @@ import SnapKit
 class SampleViewController: UIViewController {
 
     var playlistID = ""
-    var image : UIImageView = {
-        
-        var img = UIImageView()
-        img.translatesAutoresizingMaskIntoConstraints = false
-        img.image = UIImage(systemName: "sun.fill")
-        return img
-    }()
+    var image = UIImageView()
+    
     var nameLabel : UILabel = {
        var label = UILabel()
         label.numberOfLines = 2
-        label.text = "Channel Name"
+        label.text = ""
         label.textColor = .black
-        label.font = UIFont(name: "HiraMinProN-W6", size: 16)
+        label.font = UIFont(name: Constants.SFProTextSemibold, size: 16)
         return label
     }()
     var detailLabel: UILabel = {
         var label = UILabel()
         label.textColor = UIColor(hexString: "#707070")
-        label.font = UIFont(name: "HiraMinProN-W3", size: 10)
-        label.text = "999999999 subscribers"
+        label.font = UIFont(name: Constants.SFProTextRegular, size: 10)
+        label.text = ""
         return label
     }()
     
@@ -47,10 +42,7 @@ class SampleViewController: UIViewController {
             make.left.top.equalTo(view).offset(17)
             make.right.equalTo(view).inset(17)
             make.bottom.equalTo(view)
-//            make.height.equalTo(180)
-//            make.width.equalTo(339)
-//            make.centerX.equalTo(view)
-//            make.bottom.equalTo(view)
+
         }
         image.clipsToBounds = true
         image.layer.cornerRadius = 10
@@ -65,12 +57,7 @@ class SampleViewController: UIViewController {
             make.leading.trailing.equalTo(detailLabel)
             make.bottom.equalTo(image.snp.bottom).inset(28)
             make.height.lessThanOrEqualTo(60)
-            
-//            make.leading.bottom.equalTo(image).offset(20)
-//            make.height.width.greaterThanOrEqualTo(image)
+
         }
-        
     }
-
-
 }

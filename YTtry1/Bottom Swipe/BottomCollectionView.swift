@@ -13,7 +13,6 @@ class BottomCollectionView: UICollectionView{
        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
         
         layout.sectionInset = UIEdgeInsets(top: 1, left: 0, bottom: 5, right: 5)
         return layout

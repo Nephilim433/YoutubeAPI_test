@@ -33,7 +33,7 @@ class BottomCollectionViewCell: UICollectionViewCell {
         
         let rect2 = CGRect(x: self.bounds.minX, y: self.bounds.minY, width: 135, height: 135)
         imageView = UIImageView(frame: rect2)
-        imageView?.image = UIImage(named: "oracle")
+        imageView?.image = UIImage(named: "cover")
         imageView?.contentMode = .scaleAspectFill
         
         contentView.backgroundColor = .clear

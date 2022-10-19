@@ -33,7 +33,7 @@ class MidCollectionViewCell: UICollectionViewCell {
         
         let rect2 = CGRect(x: self.bounds.minX, y: self.bounds.minY, width: contentView.frame.width, height: 70)
         imageView = UIImageView(frame: rect2)
-        imageView?.image = UIImage(named: "oracle")
+        imageView?.image = UIImage(named: "cover")
         imageView?.contentMode = .scaleAspectFill
         contentView.backgroundColor = .clear
         addSubview(imageView!)
